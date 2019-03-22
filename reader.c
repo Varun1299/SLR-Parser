@@ -9,8 +9,8 @@ Production *productionFileReader(char *fileName)
 	char *body;
 	FILE *filePtr;
 	int numTerminals, numNonTerminals, count = 0;
-	Production *headptr;
-	Production *tailptr;
+	Production *headPtr;
+	Production *tailPtr;
  
 
 	filePtr = fopen(fileName, "r");
@@ -28,6 +28,7 @@ Production *productionFileReader(char *fileName)
 		production->number = count+1;
 		production->head = head;
 		production->body = body;
+		production->next = NULL;
 		// printf("Head : %c\n", head);
 		// printf("Body : %s\n", body);
 		// printf("Number : %c\n", number);
@@ -35,17 +36,129 @@ Production *productionFileReader(char *fileName)
 		
 		if(count == 0)
 		{
-		    headptr = production;
-		    tailptr = production;
+		    headPtr = production;
+		    tailPtr = production;
 		}
 		else
 		{
-			tailptr->next = production;
-			tailptr = production;
+			tailPtr->next = production;
+			tailPtr = production;
 		}
 		count++;
 	}
-	return headptr;
+	return headPtr;
+}
+
+
+void addNode(alphabetPtr, node)
+{
+	tmpPtr = alphabetPtr->statesPtr;
+	if (tmpPtr == NULL)
+	{
+		alphabetPtr->statesPtr = node;
+	}
+	else
+	{
+		while(tmpPtr->next != NULL)
+		{
+			tmpPtr = tmpPtr->next;
+		}
+		tmpPtr->next = node;
+	}
+}
+
+
+Alphabet *parseTableReader(char *filename)
+{
+	FILE *filePtr;
+	char ch;
+	int state, flag, nodeCount, count = 0;
+	Alphabet *headPtr;
+	Alphabet *tailPtr;
+	char buffer[4];
+ 
+
+	filePtr = fopen(fileName, "r");
+	if(filePtr == NULL)
+	{
+		printf("Could not open file :(");
+		exit(-1);
+	}
+
+	while(1)
+	{
+		ch = fgetc(filePtr);
+		if(ch == '\n')
+		{
+			break;
+		}
+		else if(ch != ',')
+		{
+			Alphabet *symbol = (Alphabet *)malloc(sizeof(Alphabet));
+			symbol->alphabet = ch;
+			symbol->next = NULL;
+			symbol->statesPtr = NULL;
+
+			if(count == 0)
+			{
+			    headPtr = symbol;
+			    tailPtr = symbol;
+			    count++;
+			}
+			else
+			{
+				tailPtr->next = symbol;
+				tailPtr = symbol;
+			}
+		}
+	}
+
+	flag = 0;
+	while(1)
+	{
+		tmpPtr = headPtr;
+		state  = getw(filePtr);
+		fgetc(filePtr);
+		count = 0;
+		while(1)
+		{
+			ch = fgetc(filePtr);
+			if (ch == ',')
+			{
+				if (count != 0)
+				{
+					Node *node = (Node *)malloc(sizeof(Node));
+					node->state = state;
+					node->action = (char *)buffer;
+					node->next = NULL;
+					addNode(tmpPtr, node);
+				}
+				tmpPtr = tmpPtr->next;
+				count = 0;
+			}
+			else if (ch == '\n')
+			{
+				break;
+			}
+			else if (ch == EOF)
+			{
+				flag = 1;
+				break;
+			}
+			else
+			{	
+				buffer[count] = ch;
+				buffer[count + 1] = '\0';
+				count++;
+			}
+
+		}
+		if (flag == 1)
+		{
+			break;
+		}
+	}
+
 }
 
 
