@@ -4,7 +4,7 @@
 #include "stack.h"
 #include<string.h>
 
-void parse_char(char a, struct Stack** root, Production *p, Alphabet *table){
+void parse_char(char a, struct stackNode** root, Production *p, Alphabet *table){
 	int flag = 0;
 	while (table -> next != NULL){
 		if (table -> alphabet == a){
