@@ -60,7 +60,7 @@ void parse_char(char a, struct stackNode** root, Production *p, Alphabet *table)
 		char *b = p -> body;
 
 		for (int i = 0; i < strlen(b); i++){
-			DoubleStack *ds = pop(root);
+			dataPair *ds = pop(root);
 			if (b[i] != ds -> symbol){
 				printf("Error\n");
 				return;
