@@ -2,6 +2,7 @@
 typedef struct Production Production;
 typedef struct Alphabet Alphabet;
 typedef struct Node Node;
+typedef struct DoubleStack DoubleStack;
 
 struct Production
 {
@@ -26,4 +27,8 @@ struct Node
 	Node *next;
 };
 
-
+struct DoubleStack
+{
+	int state;
+	char symbol;
+}
