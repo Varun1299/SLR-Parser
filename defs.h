@@ -27,7 +27,7 @@ struct Node
 	Node *next;
 };
 
-struct DoubleStack
+struct dataPair
 {
 	int state;
 	char symbol;
