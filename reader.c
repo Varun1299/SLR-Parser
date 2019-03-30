@@ -160,10 +160,3 @@ Alphabet *parseTableReader(char *filename)
 	}
 
 }
-
-
-int main(int argc, char const *argv[])
-{
-	
-	return 0;
-}
