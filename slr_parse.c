@@ -6,7 +6,7 @@
 
 int parse_char(char a, struct stackNode** root, Production *p, Alphabet *table){
 	int flag = 0;
-	while (table->next != NULL){
+	while (table->next != NULL){  // finding the ternimal in the linked list corresponding to input
 
 		if (table->alphabet == a){
 			flag = 1;
@@ -27,7 +27,7 @@ int parse_char(char a, struct stackNode** root, Production *p, Alphabet *table){
 	Node *state_node = table->statesPtr;
 
 
-	while (1){
+	while (1){  // finding the state corresponding to the top of the stack
 		if (state_node->state == st){
 			flag = 1;
 			break;
@@ -44,23 +44,23 @@ int parse_char(char a, struct stackNode** root, Production *p, Alphabet *table){
 	flag = 0;
 
 
-	char *act = state_node->action;
+	char *act = state_node->action; //pick up the relevant action
 
-	if (strcmp(act, "acc") == 0){
+	if (strcmp(act, "acc") == 0){  //aceept
 		printf("ACCEPT \n");
 		return -2;
 	}
-	else if (act[0] == 's'){
+	else if (act[0] == 's'){   	//shift
 			
 			char *ac = (act + 1);  
 			int n = atoi(ac);
-			push(root, n, a);
+			push(root, n, a);  	// pushing alphabet, shifted state on to stack
 			return 0;
 	}
-	else{
+	else{ 						//reduce
 		char *ac = (act + 1);
 		int n = atoi(ac);
-		while (p->next != NULL){
+		while (p->next != NULL){ // finding the relevant production
 			if (p->number == n){
 				flag = 1;
 				break;
@@ -78,7 +78,7 @@ int parse_char(char a, struct stackNode** root, Production *p, Alphabet *table){
 			len = len - 1;
 		}
 
-		for (int i = len - 1; i >= 0; i--){
+		for (int i = len - 1; i >= 0; i--){    //popping out of stack if symbols match
 			dataPair *ds = pop(root);
 
 			if (b[i] != ds->symbol){
@@ -91,7 +91,7 @@ int parse_char(char a, struct stackNode** root, Production *p, Alphabet *table){
 		}
 
 
-		printf("Production %c -> %s\n",h,b );
+		printf("Production %c -> %s\n",h,b );  // printing out production
 
 		while (table->next != NULL){
 			if (table->alphabet == h){
@@ -108,7 +108,7 @@ int parse_char(char a, struct stackNode** root, Production *p, Alphabet *table){
 		Node *state_node = table->statesPtr;
 
 
-		while (state_node->next != NULL){
+		while (state_node->next != NULL){ // finding the GOTO value for the non-terminal
 			
 			if (state_node->state == st){
 
@@ -132,7 +132,7 @@ int parse_char(char a, struct stackNode** root, Production *p, Alphabet *table){
 
 		n = atoi(bct);  
 
-        push(root, n, h);
+        push(root, n, h);  //pushing non-terminal, goto on to stack
         return 1;
 
        
