@@ -9,13 +9,18 @@
 
 int main(int argc, char const *argv[])
 {
-	char productionFile[100], parseTableFile[100];
+	//char productionFile[100], parseTableFile[100];
     printf("Enter file name of the file containing the productions :\n");
-	scanf("%s", productionFile);
+	//scanf("%s", productionFile);
+
+    char *productionFile = "assignment2-sample-grammar1.txt";
+
     printf("Yo \n");
     Production *productions = productionFileReader(productionFile);
     printf("Enter file name of the file containing the parse table :\n");
-	scanf( "%s", parseTableFile);
+	//scanf( "%s", parseTableFile);
+
+	char *parseTableFile = "assignment2-sample-parsetable1.csv";
 
 	Alphabet *parseTable = parseTableReader(parseTableFile);
 	int root_state = 0;

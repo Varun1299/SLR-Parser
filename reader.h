@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "defs.h"
 
 
@@ -118,23 +119,29 @@ Alphabet *parseTableReader(char *fileName)
 		}
 	}
 
+
 	flag = 0;
 	while(1)
 	{
 		Alphabet *tmpPtr = headPtr;
-		state  = getw(filePtr);
+		state  = getc(filePtr) - '0';
 		fgetc(filePtr);
 		count = 0;
 		while(1)
 		{
 			ch = fgetc(filePtr);
+
 			if (ch == ',')
 			{
 				if (count != 0)
 				{
+
 					Node *node = (Node *)malloc(sizeof(Node));
 					node->state = state;
-					node->action = (char *)buffer;
+					strcpy(node->action, buffer);
+					//printf("%s\n",node->action );
+
+					// node->action = (char *)buffer;
 					node->next = NULL;
 					addNode(tmpPtr, node);
 				}
