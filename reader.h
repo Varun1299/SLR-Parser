@@ -7,6 +7,7 @@
 Production *productionFileReader(char *fileName)
 {
 
+	/*Reads all production rules from a file and creates a linked list where each node stores the head and body of a production.*/
 	char head, ch;
 	char body[256];
 	FILE *filePtr;
@@ -20,18 +21,19 @@ Production *productionFileReader(char *fileName)
 
 	if(filePtr == NULL)
 	{
+		//If file does not exist
 		printf("Could not open file :( ");
 		exit(-1);
 	}
     
-
+    //Reads number of terminals and non-terminals
     numTerminals = fgetc(filePtr) - '0';
     fgetc(filePtr);
     numNonTerminals = fgetc(filePtr) - '0';
     fgetc(filePtr);
     fgetc(filePtr);
 
-    
+    //Reads the productions
 	while(1)
 	{
 		if (flag)
@@ -84,6 +86,7 @@ Production *productionFileReader(char *fileName)
 
 void addNode(Alphabet *alphabetPtr, Node *node)
 {
+	//Adds a new node to end of linked list whose head is pointed to by alphabetPtr.
 	Node *tmpPtr = alphabetPtr->statesPtr;
 	if (tmpPtr == NULL)
 	{
@@ -103,6 +106,10 @@ void addNode(Alphabet *alphabetPtr, Node *node)
 Alphabet *parseTableReader(char *fileName)
 {
 
+		/*
+	Reads the file with parse table to create a linked list of nodes, where each node is head of another linked list.
+	The primary linked list store alphabets. The secondary linked list store the state the action needed to be taken when we see the correspanding alhabet and state.
+	*/
 	FILE *filePtr;
 	char ch;
 	int state, flag, nodeCount, count = 0;
@@ -117,7 +124,8 @@ Alphabet *parseTableReader(char *fileName)
 		printf("Could not open file :(");
 		exit(-1);
 	}
-
+	
+	//Follwing while loop reads the terminals/non-terminals and creates a linked list containing them.
 	while(1)
 	{
 		ch = fgetc(filePtr);
@@ -146,7 +154,8 @@ Alphabet *parseTableReader(char *fileName)
 		}
 	}
 
-
+	//Following while loop reads the parse table entries and stores them in the linked list of their corresponding alphabet.
+	//The state is stored as an attribute.
 	flag = 0;
 	while(1)
 	{
