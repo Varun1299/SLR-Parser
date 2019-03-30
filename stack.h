@@ -9,10 +9,10 @@
 
 /* Implementation of stack using linked lists. */
 
-/*Struct for a single node that's pushed in the stack
- next stores the pointer to the next node, element is a pointer to type struct Expr.
- It actually stores the expression. stack_length is used to determine the number of
- elements in the stack. */
+/*Struct for a single node that's pushed into the stack
+ next stores the pointer to the next node, pair is of type struct dataPair
+ which stores the state and the symbol. stack_length stores the length of the
+ stack till that entry*/
 
 struct stackNode
 {
@@ -21,8 +21,8 @@ struct stackNode
     int stack_length;
 };
 
-/*Function used to make a new node. Takes pointer to a struct Expr as input, and
- returns pointer to a stuct Node.*/
+/*Function used to make a new node. Takes two arguments state and symbol
+ and returns a node*/
 
 struct stackNode* newNode(int state, char symbol)
 {
@@ -41,7 +41,8 @@ int isEmpty(struct stackNode *root)
     return !root;
 }
 
-/*Method to push elements to the stack.*/
+/* Method to push elements to the stack. Takes the root, state, and symbol
+ as inputs and updates the root*/
 
 void push(struct stackNode** root, int state, char symbol)
 {
@@ -54,7 +55,8 @@ void push(struct stackNode** root, int state, char symbol)
 }
 
 /*Method used to pop elements from the stack.
- Returns a pointer to a struct Expr that is popped out.*/
+ Returns a pointer to a struct of type dataPair that is popped out
+ */
 
 dataPair* pop(struct stackNode** root)
 {
