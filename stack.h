@@ -1,3 +1,6 @@
+#ifndef STACK_H_INCLUDED
+#define STACK_H_INCLUDED
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -63,8 +66,9 @@ dataPair* pop(struct stackNode** root)
     int prev_length = (*root)->stack_length;
     *root = (*root)->next;
     (*root)->stack_length = prev_length - 1;
-    dataPair* popped = temp->pair;
+    dataPair* popped = &temp->pair; //baadme dekhlenge
     free(temp);
     return popped;
 }
 
+#endif

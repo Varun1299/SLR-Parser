@@ -1,0 +1,12 @@
+There are 2 input files - 
+1)The first one is a .txt file which consists of the production rules.
+The first line of this file consists of 2 intergers - 
+	a)The first one being the number of non terminals
+	b)The second integer indicates the number of terminals.
+The following lines contain the production rules labelled in order.
+The non terminals are indicated by uppercase letters and the terminals by lowercase letters.
+The symbol ':' is used instead of -> to denote the productions.
+
+2)The second file is a .csv file which contains the parse table for the corresponding grammar.
+acc is used instead of 'accept' . The shift and reduce operations are labelled corresponding to the number of the production rule 
+in the .txt file . Eg. r4 means a reduce operation using production rule 4 from the txt file.

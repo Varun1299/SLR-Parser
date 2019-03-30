@@ -6,27 +6,27 @@
 
 void parse_char(char a, struct stackNode** root, Production *p, Alphabet *table){
 	int flag = 0;
-	while (table -> next != NULL){
-		if (table -> alphabet == a){
+	while (table->next != NULL){
+		if (table->alphabet == a){
 			flag = 1;
 			break;
 		}
-		table = table -> next;
+		table = table->next;
 	}
 	if (flag == 0){
 		printf("%c is not a valid symbol\n", a);
 		return ;
 	}
 	flag = 0;
-	int st = (*root) -> state;
-	Node *state_node = table -> statesPtr;
+	int st = (*root)->pair.state;  // ????????
+	Node *state_node = table->statesPtr;
 
-	while (state_node -> next != NULL){
-		if (state_node -> state == st){
+	while (state_node->next != NULL){
+		if (state_node->state == st){
 			flag = 1;
 			break;
 		}
-		state_node = state_node -> next;
+		state_node = state_node->next;
 	}
 	if (flag == 0){
 		printf("No action for character %c and state %d \n", a, st);
@@ -34,34 +34,34 @@ void parse_char(char a, struct stackNode** root, Production *p, Alphabet *table)
 	}
 	flag = 0;
 
-	char *act = state_node -> action;
+	char *act = state_node->action;
 
 	if (strcmp(act, "acc") == 0){
 		printf("Accept");
 		return;
 	}
 	else if (act[0] == 's'){
-			char *ac = *(act + 1);
+			char *ac = (act + 1);  //????????
 			int n = atoi(ac);
 			push(root, n, a);
 	}
 	else{
-		char *ac = *(act + 1);
+		char *ac = (act + 1);  //???????
 		int n = atoi(ac);
-		while (p -> next != NULL){
-			if (p -> number == n){
+		while (p->next != NULL){
+			if (p->number == n){
 				flag = 1;
 				break;
 			}
-			p = p -> next;
+			p = p->next;
 		}
 
-		char h = p -> head;
-		char *b = p -> body;
+		char h = p->head;
+		char *b = p->body;
 
 		for (int i = 0; i < strlen(b); i++){
 			dataPair *ds = pop(root);
-			if (b[i] != ds -> symbol){
+			if (b[i] != ds->symbol){
 				printf("Error\n");
 				return;
 			}
@@ -71,8 +71,8 @@ void parse_char(char a, struct stackNode** root, Production *p, Alphabet *table)
 		}
 		printf("Production %c -> %s\n",h,b );
 
-		while (table -> next != NULL){
-			if (table -> alphabet == h){
+		while (table->next != NULL){
+			if (table->alphabet == h){
 				flag = 1;
 				break;
 			}
@@ -81,26 +81,26 @@ void parse_char(char a, struct stackNode** root, Production *p, Alphabet *table)
 
 
 		flag = 1;
-		int st = (*root) -> state;
-		Node *state_node = table -> statesPtr;
+		int st = (*root)->pair.state;
+		Node *state_node = table->statesPtr;
 
-		while (state_node -> next != NULL){
-			if (state_node -> state == st){
+		while (state_node->next != NULL){
+			if (state_node->state == st){
 				flag = 1;
 				break;
 			}
-			state_node = state_node -> next;
+			state_node = state_node->next;
 		}
 		if (flag == 0){
 			printf("No action for terminal %c and state %d \n", h, st);
 			return ;
 		}
 		flag = 0;
-		char *act = state_node -> action;
-		char *ac = *(act + 1);
-		int n = atoi(ac);
+		char *act = state_node->action;
+		//char *ac = *(act + 1);    Redefiniton of variable
+		//int n = atoi(ac);     Redefinition of variable
 
-		push(root, n, h)
+        push(root, n, h);
 
 
 	}
