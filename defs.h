@@ -4,13 +4,13 @@
 typedef struct Productions{
     int number;
     char head;
-    char * body;
+    char body[256];
     struct Productions *next;
 } Production;
 
 typedef struct Nodes{
     int state;
-    char *action;
+    char action[100];
     struct Nodes *next;
 } Node;
 

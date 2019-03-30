@@ -6,39 +6,65 @@
 
 Production *productionFileReader(char *fileName)
 {
-    printf("in prod\n");
-	char head;
-	char *body;
+
+	char head, ch;
+	char body[256];
 	FILE *filePtr;
-	int numTerminals, numNonTerminals, count = 0;
+	int numTerminals, numNonTerminals, count = 0, k , flag;
 	Production *headPtr;
 	Production *tailPtr;
  
 
 	filePtr = fopen(fileName, "r");
     
-    printf("t\n");
+
 	if(filePtr == NULL)
 	{
 		printf("Could not open file :( ");
 		exit(-1);
 	}
     
-	fscanf(filePtr, "%d %d", &numTerminals, &numNonTerminals);
-    printf("%p", filePtr);
-	while(fscanf(filePtr, "%c:%s\n", &head, body) == 2)
+
+    numTerminals = fgetc(filePtr) - '0';
+    fgetc(filePtr);
+    numNonTerminals = fgetc(filePtr) - '0';
+    fgetc(filePtr);
+    fgetc(filePtr);
+
+    
+	while(1)
 	{
-        printf("in while\n");
+		if (flag)
+		{
+			break;
+		}
+		head = fgetc(filePtr);
+		fgetc(filePtr);
+		k = 0;
+		while(1)
+		{	
+			ch = fgetc(filePtr);
+			if(ch == EOF)
+			{
+				body[k] = '\0';
+				flag = 1;
+				break;
+			}
+			if (ch == '\n')
+			{
+				body[k] = '\0';
+				break;
+			}
+			body[k] = ch;
+			k++;
+		}
+
 		Production *production = (Production *)malloc(sizeof(Production));
 		production->number = count+1;
 		production->head = head;
-		production->body = body;
+		strcpy(production->body, body);
 		production->next = NULL;
-		// printf("Head : %c\n", head);
-		// printf("Body : %s\n", body);
-		// printf("Number : %c\n", number);
-		// printf("------------------------------------------");
-		
+
 		if(count == 0)
 		{
 		    headPtr = production;
@@ -50,10 +76,11 @@ Production *productionFileReader(char *fileName)
 			tailPtr = production;
 		}
 		count++;
+		
 	}
+
 	return headPtr;
 }
-
 
 void addNode(Alphabet *alphabetPtr, Node *node)
 {
@@ -75,7 +102,7 @@ void addNode(Alphabet *alphabetPtr, Node *node)
 
 Alphabet *parseTableReader(char *fileName)
 {
-    printf("in parse\n");
+
 	FILE *filePtr;
 	char ch;
 	int state, flag, nodeCount, count = 0;
@@ -124,7 +151,8 @@ Alphabet *parseTableReader(char *fileName)
 	while(1)
 	{
 		Alphabet *tmpPtr = headPtr;
-		state  = getc(filePtr) - '0';
+		fscanf(filePtr, "%d", &state);
+		// state  = getc(filePtr) - '0';
 		fgetc(filePtr);
 		count = 0;
 		while(1)
@@ -139,17 +167,24 @@ Alphabet *parseTableReader(char *fileName)
 					Node *node = (Node *)malloc(sizeof(Node));
 					node->state = state;
 					strcpy(node->action, buffer);
-					//printf("%s\n",node->action );
 
-					// node->action = (char *)buffer;
 					node->next = NULL;
+
+
 					addNode(tmpPtr, node);
+
 				}
 				tmpPtr = tmpPtr->next;
 				count = 0;
 			}
 			else if (ch == '\n')
 			{
+				Node *node = (Node *)malloc(sizeof(Node));
+				node->state = state;
+				strcpy(node->action, buffer);
+
+				node->next = NULL;
+				addNode(tmpPtr, node);
 				break;
 			}
 			else if (ch == EOF)
@@ -169,6 +204,13 @@ Alphabet *parseTableReader(char *fileName)
 		{
 			break;
 		}
+
+
 	}
+
+
+
+
+
     return headPtr;
 }
